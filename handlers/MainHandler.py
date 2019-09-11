@@ -1,9 +1,9 @@
 import tornado.web
+import tornado
+from service.LuminolService import *
 
 class MainHandler(tornado.web.RequestHandler):
     
-    def initialize(self, **kwargs):
-        self.db = kwargs.get('db')
-
-    def get(self):
-        self.write("Hello, world")
+    def post(self):
+        timeseriesDict = tornado.escape.json_decode(self.request.body)
+        self.write(generateJsonResult(formatAnomalies(AnomalyDetector(timeseriesDict).get_anomalies()), timeseriesDict))
