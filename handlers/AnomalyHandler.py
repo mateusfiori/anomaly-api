@@ -2,7 +2,7 @@ import tornado.web
 import tornado
 from service.LuminolService import *
 
-class MainHandler(tornado.web.RequestHandler):
+class AnomalyHandler(tornado.web.RequestHandler):
     
     def post(self):
         timeseriesDict = tornado.escape.json_decode(self.request.body)

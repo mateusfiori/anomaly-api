@@ -1,4 +1,2 @@
-pika
 tornado
 motor
-mongoengine

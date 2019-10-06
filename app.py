@@ -4,7 +4,8 @@ import tornado.ioloop
 import tornado.web
 import tornado.httpserver
 
-from handlers.MainHandler import MainHandler
+from handlers.AnomalyHandler import AnomalyHandler
+from handlers.ForecastHandler import ForecastHandler    
 from controllers.HealthController import HealthController
 
 from healthcheck import HealthCheck, TornadoHandler
@@ -14,7 +15,8 @@ class Application(tornado.web.Application):
         # args = dict(db=db)
 
         handlers = [
-            (r"/detect", MainHandler),
+            (r"/detect", AnomalyHandler),
+            (r"/forecast", ForecastHandler),
             (r"/health", TornadoHandler, dict(checker=HealthCheck()))
         ]
 
@@ -30,6 +32,6 @@ if __name__ == "__main__":
     app = tornado.httpserver.HTTPServer(Application())
     app.listen(7777)
 
-    print('Sender server running...')
+    print('Server running...')
 
     tornado.ioloop.IOLoop.current().start()
