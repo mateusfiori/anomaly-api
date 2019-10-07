@@ -20,5 +20,5 @@ def formatDictToDataframe(timeserie):
     }
 
 def forecastTimeserie(timeserie):
-    model = Prophet().fit(pd.DataFrame.from_dict(formatDictToDataframe(timeserie)))
-    return generateJsonResult(model.predict(model.make_future_dataframe(periods=30, freq='S')))
+    model = Prophet().fit(pd.DataFrame.from_dict(formatDictToDataframe(timeserie['timeserie'])))
+    return generateJsonResult(model.predict(model.make_future_dataframe(periods=timeserie['future_ahead'], freq=timeserie['frequency'])))
