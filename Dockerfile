@@ -1,34 +1,31 @@
-# We will use Ubuntu for our image
-FROM alpine:3.8
+FROM python:3.6.9-slim-stretch
 
-# Set the working directory to /app
-WORKDIR /app
+RUN apt-get -y update  && apt-get install -y \
+    python3-dev \
+    libpng-dev \
+    apt-utils \
+    build-essential \
+    python-psycopg2 \
+    python-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+RUN pip install --upgrade setuptools
+RUN pip install cython
+RUN pip install numpy
+RUN pip install matplotlib
+RUN pip install pystan
+RUN pip install psycopg2-binary
+RUN pip install motor
+RUN pip install tornado
+RUN pip install luminol
+RUN pip install py-healthcheck==1.9.0
+RUN pip install --upgrade plotly
+RUN pip install fbprophet
+RUN pip install sqlalchemy
 
-RUN apk add --no-cache python3 python3-dev && \
-    python3 -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip3 install --upgrade pip setuptools && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-    rm -r /root/.cache
+WORKDIR /forecast
+COPY . /forecast/
 
-RUN apk --update add --no-cache gcc freetype-dev libpng-dev
+EXPOSE 7777
 
-RUN apk add --no-cache --virtual .build-deps \
-    musl-dev \
-    g++
-
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
-RUN pip install --no-cache-dir fbprophet==0.5
-
-# Install any needed packages specified in requirements.txt
-
-RUN apk del .build-deps
-
-EXPOSE 3333
-
-CMD ["python3", "app.py"]
+ENTRYPOINT [ "python", "app.py" ]
