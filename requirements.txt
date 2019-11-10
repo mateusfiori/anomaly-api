@@ -7,6 +7,6 @@ matplotlib
 pystan
 psycopg2-binary
 luminol
---upgrade plotly
+plotly
 fbprophet
 sqlalchemy
