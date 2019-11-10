@@ -15,7 +15,8 @@ def generateJsonResult(forecastDf):
 
 def formatDictToDataframe(timeserie):
     return {
-        'ds': [str(datetime.fromtimestamp(int(ts)).strftime('%Y-%m-%d %H:%M:%S')) for ts in list(timeserie.keys())],
+        # 'ds': [str(datetime.fromtimestamp(int(ts)).strftime('%Y-%m-%d %H:%M:%S')) for ts in list(timeserie.keys())],
+        'ds': [ts for ts in list(timeserie.keys())],
         'y': list(timeserie.values())
     }
 
